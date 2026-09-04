@@ -1,12 +1,27 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#166534"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>سال‌نما | Salnama</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#166534"><meta name="description" content="سال‌نما، محاسبه حیوان سال، سال تولد، سن و سال قمری"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>سال‌نما | Salnama</title>
 </head>
 <body>
 <main class="app">
 <header><div class="logo">🐾</div><div><h1>سال‌نما</h1><p>حیوان سال در تقویم هجری شمسی</p></div></header>
-<section class="card hero"><label for="year">سال شمسی را انتخاب کنید</label><div class="year-row"><button id="prev" aria-label="سال قبل">‹</button><input id="year" type="number" min="1" max="9999" value="1409"><button id="next" aria-label="سال بعد">›</button></div><div id="result" class="result"><div id="animalEmoji" class="animal">🐕</div><h2 id="animalFa">سگ</h2><p>نام ترکمنی: <strong id="animalTk">ایت</strong></p><span id="yearText">سال ۱۴۰۹</span></div></section>
+<section class="card hero">
+<label for="year">سال شمسی را انتخاب کنید</label>
+<div class="year-row"><button id="prev" aria-label="سال قبل">‹</button><input id="year" type="number" min="1" max="9999" value="1409"><button id="next" aria-label="سال بعد">›</button></div>
+<div id="result" class="result"><div id="animalEmoji" class="animal">🐕</div><h2 id="animalFa">سگ</h2><p>نام ترکمنی: <strong id="animalTk">it</strong></p><span id="yearText">سال ۱۴۰۹</span></div>
+</section>
+<section class="card birth-card">
+<div class="section-title"><h2>محاسبه سال تولد و سن</h2><span>شمسی</span></div>
+<label for="birthYear">سال تولد شما</label>
+<div class="year-row"><button id="birthPrev" aria-label="سال تولد قبل">‹</button><input id="birthYear" type="number" min="1" max="9999" value="1375"><button id="birthNext" aria-label="سال تولد بعد">›</button></div>
+<div class="info-grid">
+<div class="info-box"><small>سال تولد</small><strong id="birthYearText">۱۳۷۵</strong></div>
+<div class="info-box"><small>سن تقریبی</small><strong id="ageText">۳۰ سال</strong></div>
+<div class="info-box"><small>سال قمری تولد</small><strong id="lunarYearText">۱۴۱۷</strong></div>
+</div>
+<p class="note">سال قمری بر اساس نوروز همان سال شمسی و به‌صورت تقریبی نمایش داده می‌شود؛ برای تبدیل دقیق قمری، روز و ماه تولد لازم است.</p>
+</section>
 <section class="card"><div class="section-title"><h2>چرخه ۱۲ حیوان</h2><span>قابل انتخاب</span></div><div id="animals" class="grid"></div></section>
 <footer>Salnama • نسخه اولیه PWA</footer>
 </main>
