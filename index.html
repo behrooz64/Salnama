@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#166534"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>سال‌نما | Salnama</title>
+</head>
+<body>
+<main class="app">
+<header><div class="logo">🐾</div><div><h1>سال‌نما</h1><p>حیوان سال در تقویم هجری شمسی</p></div></header>
+<section class="card hero"><label for="year">سال شمسی را انتخاب کنید</label><div class="year-row"><button id="prev" aria-label="سال قبل">‹</button><input id="year" type="number" min="1" max="9999" value="1409"><button id="next" aria-label="سال بعد">›</button></div><div id="result" class="result"><div id="animalEmoji" class="animal">🐕</div><h2 id="animalFa">سگ</h2><p>نام ترکمنی: <strong id="animalTk">ایت</strong></p><span id="yearText">سال ۱۴۰۹</span></div></section>
+<section class="card"><div class="section-title"><h2>چرخه ۱۲ حیوان</h2><span>قابل انتخاب</span></div><div id="animals" class="grid"></div></section>
+<footer>Salnama • نسخه اولیه PWA</footer>
+</main>
+<script src="app.js"></script><script>if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');</script>
+</body></html>
