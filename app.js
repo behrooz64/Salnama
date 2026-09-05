@@ -13,7 +13,6 @@ const animals=[
 {fa:'خوک',tk:'دونگیز',emoji:'🐖'}
 ];
 
-// مبنا: ۱۴۰۵ = اسب
 const baseYear=1405;
 const baseAnimalIndex=6;
 
@@ -21,21 +20,25 @@ function animalIndex(year){
  return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;
 }
 
-// سن های احتمالی بر اساس جایگاه حیوان در چرخه موچه
-function possibleAges(index){
+function possibleAges(animalIndex){
  let result=[];
- let startAge=index+1;
- for(let age=startAge;age<150;age+=12){
+ for(let age=animalIndex+1;age<150;age+=12){
   result.push(age);
  }
  return result;
 }
 
-function calculate(age){
+function calculateSelected(animalIndex,age){
+ const possible=possibleAges(animalIndex);
+ if(!possible.includes(age)) return null;
  const birthYear=baseYear-age;
  const animal=animals[animalIndex(birthYear)];
  const lunar=Math.floor(age*365.2425/354.367);
- return {birthYear,age,lunarAge:lunar,difference:lunar-age,animal};
+ return {birthYear,solarAge:age,lunarAge:lunar,difference:lunar-age,animal};
 }
 
-window.muche={animals,possibleAges,calculate};
+window.muche={
+ animals,
+ possibleAges,
+ calculateSelected
+};
