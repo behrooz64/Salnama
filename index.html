@@ -1,35 +1,25 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#166534"><meta name="description" content="سال‌نما، محاسبه حیوان سال، سال تولد، سن و سال قمری"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>سال‌نما | Salnama</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#166534"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>سال‌نما | Salnama</title>
 </head>
 <body>
 <main class="app">
 <header><div class="logo">🐾</div><div><h1>سال‌نما</h1><p>حیوان سال در تقویم هجری شمسی</p></div></header>
-
 <section class="card">
-<div class="section-title"><h2>۱- انتخاب سال مرجع محاسبه</h2></div>
+<h2>۱- انتخاب سال مرجع</h2>
 <select id="referenceYear"></select>
-<p id="referenceAnimal">حیوان سال انتخابی نمایش داده می‌شود</p>
+<p id="referenceAnimal"></p>
 </section>
-
 <section class="card">
-<div class="section-title"><h2>۲- انتخاب حیوان تولد</h2><span>قابل انتخاب</span></div>
+<h2>۲- انتخاب حیوان تولد</h2>
 <div id="animals" class="grid"></div>
 </section>
-
 <section class="card hero">
-<div id="result" class="result">
-<div id="animalEmoji" class="animal">🐾</div>
-<h2 id="animalFa">نتیجه</h2>
-<p id="animalTk">ابتدا سال مرجع و حیوان را انتخاب کنید</p>
-<div id="yearText"></div>
-</div>
+<div id="result" class="result"><div class="animal">🐾</div><h2>نتیجه</h2><p>ابتدا حیوان را انتخاب کنید</p></div>
 </section>
-
-<footer>Salnama • نسخه اولیه PWA</footer>
+<footer>Salnama</footer>
 </main>
-<script src="animalData.js"></script>
-<script src="app.js"></script>
+<script src="animalData.js"></script><script src="app.js"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');</script>
 </body></html>
