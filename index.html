@@ -6,10 +6,27 @@
 <body>
 <main class="app">
 <header><div class="logo">🐾</div><div><h1>سال‌نما</h1><p>حیوان سال در تقویم هجری شمسی</p></div></header>
-<section class="card hero">
-<div id="result" class="result"><div id="animalEmoji" class="animal">🐕</div><h2 id="animalFa">سگ</h2><p>نام ترکمنی: <strong id="animalTk">it</strong></p><span id="yearText">سال ۱۴۰۹</span></div>
+
+<section class="card">
+<div class="section-title"><h2>۱- انتخاب سال مرجع محاسبه</h2></div>
+<select id="referenceYear"></select>
+<p id="referenceAnimal">حیوان سال انتخابی نمایش داده می‌شود</p>
 </section>
-<section class="card"><div class="section-title"><h2>چرخه ۱۲ حیوان</h2><span>قابل انتخاب</span></div><div id="animals" class="grid"></div></section>
+
+<section class="card">
+<div class="section-title"><h2>۲- انتخاب حیوان تولد</h2><span>قابل انتخاب</span></div>
+<div id="animals" class="grid"></div>
+</section>
+
+<section class="card hero">
+<div id="result" class="result">
+<div id="animalEmoji" class="animal">🐾</div>
+<h2 id="animalFa">نتیجه</h2>
+<p id="animalTk">ابتدا سال مرجع و حیوان را انتخاب کنید</p>
+<div id="yearText"></div>
+</div>
+</section>
+
 <footer>Salnama • نسخه اولیه PWA</footer>
 </main>
 <script src="animalData.js"></script>
