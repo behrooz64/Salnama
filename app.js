@@ -20,16 +20,16 @@ function animalIndex(year){
  return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;
 }
 
-function possibleAges(animalIndex){
+function possibleAges(selectedAnimalIndex){
  let result=[];
- for(let age=animalIndex+1;age<150;age+=12){
+ for(let age=selectedAnimalIndex+1;age<150;age+=12){
   result.push(age);
  }
  return result;
 }
 
-function calculateSelected(animalIndex,age){
- const possible=possibleAges(animalIndex);
+function calculateSelected(selectedAnimalIndex,age){
+ const possible=possibleAges(selectedAnimalIndex);
  if(!possible.includes(age)) return null;
  const birthYear=baseYear-age;
  const animal=animals[animalIndex(birthYear)];
