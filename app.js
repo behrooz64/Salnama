@@ -37,8 +37,27 @@ function calculateSelected(selectedAnimalIndex,age){
  return {birthYear,solarAge:age,lunarAge:lunar,difference:lunar-age,animal};
 }
 
-window.muche={
- animals,
- possibleAges,
- calculateSelected
-};
+function renderAnimals(){
+ const box=document.getElementById('animals');
+ if(!box) return;
+ box.innerHTML='';
+ animals.forEach((a,i)=>{
+  const btn=document.createElement('button');
+  btn.className='animal-card';
+  btn.innerHTML=`${a.emoji}<br>${a.fa}<br><small>${a.tk}</small>`;
+  btn.onclick=()=>showAnimalAges(i);
+  box.appendChild(btn);
+ });
+}
+
+function showAnimalAges(index){
+ const ages=possibleAges(index);
+ const result=document.getElementById('result');
+ if(result){
+  result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سن‌های احتمالی: ${ages.join('، ')}</p>`;
+ }
+}
+
+window.muche={animals,possibleAges,calculateSelected};
+
+window.addEventListener('DOMContentLoaded',renderAnimals);
