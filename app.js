@@ -1,6 +1,8 @@
 const animals=[{fa:'موش',tk:'سیچان',emoji:'🐀'},{fa:'گاو',tk:'سیغیر',emoji:'🐂'},{fa:'پلنگ',tk:'بارس',emoji:'🐆'},{fa:'خرگوش',tk:'تاوشان',emoji:'🐇'},{fa:'ماهی',tk:'بالیق',emoji:'🐟'},{fa:'مار',tk:'ییلان',emoji:'🐍'},{fa:'اسب',tk:'یلقی/آت',emoji:'🐎'},{fa:'گوسفند',tk:'قویون',emoji:'🐑'},{fa:'میمون',tk:'بیجن',emoji:'🐒'},{fa:'مرغ',tk:'تاووق',emoji:'🐓'},{fa:'سگ',tk:'ایت',emoji:'🐕'},{fa:'خوک',tk:'دونگیز',emoji:'🐖'}];
 
-const cycleReference={year:1405,index:6};
+// مرجع چرخه مستقل از سال جاری یا ۱۴۰۵
+// سال ۴ میلادی در این چرخه به عنوان سال موش در نظر گرفته شده است
+const cycleReference={year:4,index:0};
 let referenceYear=new Date().getFullYear()-621;
 
 function animalIndex(year){
