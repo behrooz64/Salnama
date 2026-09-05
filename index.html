@@ -6,21 +6,14 @@
 <body>
 <main class="app">
 <header><div><h1>تقویم موچه ترکمنی</h1><p>محاسبه سن براساس موچه ترکمنی</p></div></header>
-<button id="installBtn" class="install-btn">نصب برنامه 📲</button>
+<button id="installBtn" class="install-btn" style="display:none">نصب برنامه 📲</button>
 <section class="card reference-card">
 <h2>۱- انتخاب سال مرجع</h2>
 <select id="referenceYear"></select>
-<div class="reference-animal-box">
-<p id="referenceAnimal"></p>
-</div>
+<div class="reference-animal-box"><p id="referenceAnimal"></p></div>
 </section>
-<section class="card">
-<h2>۲- انتخاب حیوان تولد</h2>
-<div id="animals" class="grid"></div>
-</section>
-<section class="card hero">
-<div id="result" class="result"><div class="animal">🐾</div><h2>نتیجه</h2><p>ابتدا حیوان را انتخاب کنید</p></div>
-</section>
+<section class="card"><h2>۲- انتخاب حیوان تولد</h2><div id="animals" class="grid"></div></section>
+<section class="card hero"><div id="result" class="result"><div class="animal">🐾</div><h2>نتیجه</h2><p>ابتدا حیوان را انتخاب کنید</p></div></section>
 <footer>تقویم موچه ترکمنی</footer>
 </main>
 <script src="animalData.js"></script><script src="app.js"></script>
@@ -28,7 +21,8 @@
 let deferredPrompt;
 const installBtn=document.getElementById('installBtn');
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='block';});
-installBtn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;installBtn.style.display='none';}};
+installBtn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none';}};
+window.addEventListener('appinstalled',()=>{installBtn.style.display='none';});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').then(reg=>reg.update());}
 </script>
 </body></html>
