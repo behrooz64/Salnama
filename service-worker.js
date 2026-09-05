@@ -1,4 +1,4 @@
-const CACHE='salnama-v7';
+const CACHE='salnama-v8';
 const ASSETS=['./','./index.html','./style.css','./app.js','./animalData.js','./manifest.json'];
 
 self.addEventListener('install', event => {
@@ -19,7 +19,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event=>{
   if(event.request.method!=='GET') return;
   event.respondWith(
-    fetch(event.request,{cache:'reload'})
+    fetch(event.request,{cache:'no-store'})
       .then(response=>{
         const copy=response.clone();
         caches.open(CACHE).then(cache=>cache.put(event.request,copy));
@@ -27,4 +27,8 @@ self.addEventListener('fetch', event=>{
       })
       .catch(()=>caches.match(event.request))
   );
+});
+
+self.addEventListener('message', event=>{
+  if(event.data==='SKIP_WAITING') self.skipWaiting();
 });
