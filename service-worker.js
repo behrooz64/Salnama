@@ -1,28 +1,30 @@
-const CACHE='salnama-v5';
+const CACHE='salnama-v6';
 const ASSETS=['./','./index.html','./style.css','./app.js','./animalData.js','./manifest.json'];
 
-self.addEventListener('install',e=>{
+self.addEventListener('install', event => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
 });
 
-self.addEventListener('activate',e=>{
-  e.waitUntil(
+self.addEventListener('activate', event => {
+  event.waitUntil(
     caches.keys().then(keys=>Promise.all(
-      keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))
+      keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))
     )).then(()=>self.clients.claim())
   );
 });
 
-self.addEventListener('fetch',e=>{
-  if(e.request.method!=='GET') return;
-  e.respondWith(
-    fetch(e.request, {cache:'no-store'})
+self.addEventListener('fetch', event=>{
+  if(event.request.method!=='GET') return;
+  event.respondWith(
+    fetch(event.request,{cache:'no-store'})
       .then(response=>{
-        const copy=response.clone();
-        caches.open(CACHE).then(cache=>cache.put(e.request,copy));
+        if(response && response.status===200){
+          const copy=response.clone();
+          caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+        }
         return response;
       })
-      .catch(()=>caches.match(e.request))
+      .catch(()=>caches.match(event.request))
   );
 });
