@@ -1,20 +1,35 @@
-const animals=[{fa:'موش',tk:'سیچان',emoji:'🐀'},{fa:'گاو',tk:'سیغیر',emoji:'🐂'},{fa:'پلنگ',tk:'بارس',emoji:'🐆'},{fa:'خرگوش',tk:'تاوشان',emoji:'🐇'},{fa:'ماهی',tk:'بالیق',emoji:'🐟'},{fa:'مار',tk:'ییلان',emoji:'🐍'},{fa:'اسب',tk:'یلقی/آت',emoji:'🐎'},{fa:'گوسفند',tk:'قویون',emoji:'🐑'},{fa:'میمون',tk:'بیجن',emoji:'🐒'},{fa:'مرغ',tk:'تاووق',emoji:'🐓'},{fa:'سگ',tk:'ایت',emoji:'🐕'},{fa:'خوک',tk:'دونگیز',emoji:'🐖'}];
+const animals=[
+{fa:'موش',tk:'سیچان',emoji:'🐀'},
+{fa:'گاو',tk:'سیغیر',emoji:'🐂'},
+{fa:'پلنگ',tk:'بارس',emoji:'🐆'},
+{fa:'خرگوش',tk:'تاوشان',emoji:'🐇'},
+{fa:'ماهی',tk:'بالیق',emoji:'🐟'},
+{fa:'مار',tk:'ییلان',emoji:'🐍'},
+{fa:'اسب',tk:'یلقی / آت',emoji:'🐎'},
+{fa:'گوسفند',tk:'قویین',emoji:'🐑'},
+{fa:'میمون',tk:'بیجن',emoji:'🐒'},
+{fa:'مرغ',tk:'تاووق',emoji:'🐓'},
+{fa:'سگ',tk:'ایت',emoji:'🐕'},
+{fa:'خوک',tk:'دونگیز',emoji:'🐖'}
+];
 
-// مرجع چرخه مستقل از سال جاری یا ۱۴۰۵
-// سال ۴ میلادی در این چرخه به عنوان سال موش در نظر گرفته شده است
-const cycleReference={year:4,index:0};
-let referenceYear=new Date().getFullYear()-621;
+// مرجع اصلی چرخه: سال ۱۴۰۵ = اسب
+const baseYear=1405;
+const baseIndex=6;
+let referenceYear=1405;
 
 function animalIndex(year){
- return ((Number(year)-cycleReference.year+cycleReference.index)%12+12)%12;
+ return ((Number(year)-baseYear+baseIndex)%12+12)%12;
+}
+
+function getReferenceAnimal(){
+ return animals[animalIndex(referenceYear)];
 }
 
 function setReferenceYear(year){
  referenceYear=Number(year);
  updateReferenceDisplay();
 }
-
-function getReferenceAnimal(){return animals[animalIndex(referenceYear)];}
 
 function possibleBirthYears(selectedIndex){
  let years=[];
@@ -25,13 +40,24 @@ function possibleBirthYears(selectedIndex){
 }
 
 function calculateSelected(selectedIndex,birthYear){
- const age=referenceYear-Number(birthYear);
- return {birthYear,solarAge:age,lunarAge:Math.floor(age*365.2425/354.367),animal:animals[selectedIndex],referenceAnimal:getReferenceAnimal()};
+ const solarAge=referenceYear-Number(birthYear);
+ const lunarAge=Math.floor(solarAge*365.2425/354.367);
+ return {
+ birthYear,
+ solarAge,
+ lunarAge,
+ difference:lunarAge-solarAge,
+ animal:animals[selectedIndex],
+ referenceAnimal:getReferenceAnimal()
+ };
 }
 
 function updateReferenceDisplay(){
  const el=document.getElementById('referenceAnimal');
- if(el){const a=getReferenceAnimal();el.innerHTML=`${referenceYear} - ${a.emoji} ${a.fa}`;}
+ if(el){
+ const a=getReferenceAnimal();
+ el.innerHTML=`${referenceYear} - ${a.emoji} ${a.fa} (${a.tk})`;
+ }
 }
 
 function renderAnimals(){
@@ -50,22 +76,23 @@ function renderAnimals(){
 
 function showAnimalYears(index){
  const result=document.getElementById('result');
- const years=possibleBirthYears(index).slice(0,10);
- if(result) result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سال تولد را انتخاب کنید:</p><div>${years.map(y=>`<button onclick="showResult(${index},${y})">${y}</button>`).join(' ')}</div>`;
+ const years=possibleBirthYears(index).slice(0,12);
+ result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: ${animals[index].tk}</p><p>سال تولد را انتخاب کنید:</p>${years.map(y=>`<button onclick="showResult(${index},${y})">${y}</button>`).join(' ')}`;
 }
 
 function showResult(index,birthYear){
- const data=calculateSelected(index,birthYear);
- const result=document.getElementById('result');
- if(!result)return;
- const info=window.animalData?.[data.animal.fa];
- result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>سال مرجع: ${referenceYear} (${data.referenceAnimal.fa})</p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن نسبت به سال مرجع: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p>`:''}`;
+ const d=calculateSelected(index,birthYear);
+ document.getElementById('result').innerHTML=`<div class="animal">${d.animal.emoji}</div><h2>${d.animal.fa}</h2><p>نام ترکمنی: ${d.animal.tk}</p><p>سال مبنا: ${referenceYear} (${d.referenceAnimal.fa})</p><p>سال تولد: ${d.birthYear}</p><p>سن شمسی: ${d.solarAge} سال</p><p>سن قمری تقریبی: ${d.lunarAge} سال</p><p>اختلاف: ${d.difference} سال</p>`;
 }
 
-window.muche={animals,possibleBirthYears,calculateSelected,setReferenceYear,getReferenceAnimal};
 window.showResult=showResult;
+window.muche={animals,animalIndex,possibleBirthYears,calculateSelected,setReferenceYear,getReferenceAnimal};
+
 window.addEventListener('DOMContentLoaded',()=>{
  renderAnimals();
  const input=document.getElementById('referenceYear');
- if(input){input.value=referenceYear;input.onchange=e=>setReferenceYear(e.target.value);}
+ if(input){
+  input.value=referenceYear;
+  input.onchange=e=>setReferenceYear(e.target.value);
+ }
 });
