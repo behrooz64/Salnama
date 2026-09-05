@@ -21,23 +21,12 @@ function animalIndex(year){
  return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;
 }
 
-// سن های چرخه ای حیوان بدون وابستگی مستقیم به سال جاری
-function animalCycleAges(){
- let result=[];
- for(let age=1;age<150;age++){
-  result.push(age);
- }
- return result.filter(age=>age%12===1 || age===12);
-}
-
+// سن های احتمالی بر اساس جایگاه حیوان در چرخه موچه
 function possibleAges(index){
  let result=[];
- for(let cycle=0;cycle<13;cycle++){
-  let cycleAge=1+(cycle*12);
-  let birthYear=baseYear-cycleAge;
-  if(animalIndex(birthYear)===index){
-   result.push(cycleAge);
-  }
+ let startAge=index+1;
+ for(let age=startAge;age<150;age+=12){
+  result.push(age);
  }
  return result;
 }
