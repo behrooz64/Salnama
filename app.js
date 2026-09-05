@@ -13,33 +13,36 @@ const animals=[
 {fa:'خوک',tk:'دونگیز',emoji:'🐖'}
 ];
 
-let currentYear=1405;
-let currentAnimalIndex=6;
+let referenceYear=1405;
 
 function animalIndex(year){
- return ((currentAnimalIndex+(year-currentYear)%12)+12)%12;
+ return ((year-1405)%12+12)%12;
 }
 
-function setCurrentYear(year){
- currentYear=Number(year);
- currentAnimalIndex=animalIndex(currentYear);
+function setReferenceYear(year){
+ referenceYear=Number(year);
+}
+
+function getReferenceAnimal(){
+ return animals[animalIndex(referenceYear)];
 }
 
 function possibleBirthYears(selectedIndex){
  let years=[];
- for(let y=currentYear;y>0;y--){
+ for(let y=referenceYear;y>0;y--){
   if(animalIndex(y)===selectedIndex) years.push(y);
  }
  return years;
 }
 
 function calculateSelected(selectedIndex,birthYear){
- const age=currentYear-birthYear;
+ const age=1405-birthYear;
  return {
   birthYear,
   solarAge:age,
   lunarAge:Math.floor(age*365.2425/354.367),
-  animal:animals[selectedIndex]
+  animal:animals[selectedIndex],
+  referenceAnimal:getReferenceAnimal()
  };
 }
 
@@ -69,9 +72,9 @@ function showResult(index,birthYear){
  const result=document.getElementById('result');
  if(!result)return;
  const info=window.animalData?.[data.animal.fa];
- result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>نام ترکمنی: <strong>${data.animal.tk}</strong></p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن شمسی: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p>`:''}`;
+ result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>نام ترکمنی: <strong>${data.animal.tk}</strong></p><p>سال مرجع: ${referenceYear} (${data.referenceAnimal.fa})</p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن شمسی: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p>`:''}`;
 }
 
-window.muche={animals,possibleBirthYears,calculateSelected,setCurrentYear};
+window.muche={animals,possibleBirthYears,calculateSelected,setReferenceYear,getReferenceAnimal};
 window.showResult=showResult;
 window.addEventListener('DOMContentLoaded',renderAnimals);
