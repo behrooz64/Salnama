@@ -4,36 +4,13 @@ const animals=[
 const baseYear=1405;
 const baseIndex=6;
 let referenceYear=1405;
-
 function animalIndex(year){return ((Number(year)-baseYear+baseIndex)%12+12)%12;}
 function getReferenceAnimal(){return animals[animalIndex(referenceYear)];}
 function setReferenceYear(year){referenceYear=Number(year);updateReferenceDisplay();}
 function updateReferenceDisplay(){let el=document.getElementById('referenceAnimal');if(el){let a=getReferenceAnimal();el.innerHTML=`${referenceYear} - ${a.emoji} ${a.fa} (${a.tk})`;}}
 function renderReferenceYears(){let s=document.getElementById('referenceYear');for(let y=1200;y<=1450;y++){let o=document.createElement('option');o.value=y;o.textContent=y;s.appendChild(o);}s.value=referenceYear;}
 function renderAnimals(){let box=document.getElementById('animals');animals.forEach((a,i)=>{let b=document.createElement('button');b.className='animal-card';b.innerHTML=`${a.emoji}<br>${a.fa}<br><small>${a.tk}</small>`;b.onclick=()=>showAnimalYears(i);box.appendChild(b);});updateReferenceDisplay();}
-
-function showAnimalYears(index){
- let result=document.getElementById('result');
- let html=`<h2>${animals[index].emoji} ${animals[index].fa}</h2><p>سال‌های این حیوان تا ۱۵۰ سال گذشته:</p>`;
- for(let year=referenceYear; year>=referenceYear-150; year--){
-   if(animalIndex(year)===index){
-    let age=referenceYear-year;
-    html+=`<button onclick="showResult(${index},${year})">سال ${year} - سن ${age} سال</button>`;
-   }
- }
- result.innerHTML=html;
-}
-
-function showResult(index,birthYear){
- let age=referenceYear-Number(birthYear);
- let lunar=Math.floor(age*365.2425/354.367);
- let a=animals[index];
- document.getElementById('result').innerHTML=`<div class="animal">${a.emoji}</div><h2>${a.fa}</h2><p>نام ترکمنی: ${a.tk}</p><p>سال مبنا: ${referenceYear} (${getReferenceAnimal().fa})</p><p>سال تولد حیوانی: ${birthYear}</p><p>سن شمسی: ${age} سال</p><p>سن قمری تقریبی: ${lunar} سال</p><p>اختلاف: ${lunar-age} سال</p>`;
-}
-
+function showAnimalYears(index){let result=document.getElementById('result');let html=`<h2>${animals[index].emoji} ${animals[index].fa}</h2><p>سال‌های این حیوان تا ۱۵۰ سال گذشته:</p><div class="age-list">`;for(let year=referenceYear;year>=referenceYear-150;year--){if(animalIndex(year)===index){let age=referenceYear-year;html+=`<button class="age-item" onclick="showResult(${index},${year})">${year}<br>${age} سال</button>`;}}html+='</div>';result.innerHTML=html;}
+function showResult(index,birthYear){let age=referenceYear-Number(birthYear);let lunar=Math.floor(age*365.2425/354.367);let a=animals[index];document.getElementById('result').innerHTML=`<div class="animal">${a.emoji}</div><h2>${a.fa}</h2><p>نام ترکمنی: ${a.tk}</p><div class="final-result"><strong>${age} سال</strong><p>سن محاسبه شده</p></div><div class="final-result"><p>سال شمسی: ${referenceYear}</p><p>سال حیوانی تولد: ${birthYear}</p><p>سن قمری: ${lunar} سال</p><p>اختلاف: ${lunar-age} سال</p></div>`;}
 window.showResult=showResult;
-window.addEventListener('DOMContentLoaded',()=>{
- renderReferenceYears();
- renderAnimals();
- document.getElementById('referenceYear').onchange=e=>setReferenceYear(e.target.value);
-});
+window.addEventListener('DOMContentLoaded',()=>{renderReferenceYears();renderAnimals();document.getElementById('referenceYear').onchange=e=>setReferenceYear(e.target.value);});
