@@ -1,12 +1,69 @@
 const animals=[{fa:'موش',tk:'سیچان',emoji:'🐀'},{fa:'گاو',tk:'سیغیر',emoji:'🐂'},{fa:'پلنگ',tk:'بارس',emoji:'🐆'},{fa:'خرگوش',tk:'تاوشان',emoji:'🐇'},{fa:'ماهی',tk:'بالیق',emoji:'🐟'},{fa:'مار',tk:'ییلان',emoji:'🐍'},{fa:'اسب',tk:'یلقی/آت',emoji:'🐎'},{fa:'گوسفند',tk:'قویون',emoji:'🐑'},{fa:'میمون',tk:'بیجن',emoji:'🐒'},{fa:'مرغ',tk:'تاووق',emoji:'🐓'},{fa:'سگ',tk:'ایت',emoji:'🐕'},{fa:'خوک',tk:'دونگیز',emoji:'🐖'}];
+
+const cycleReference={year:1405,index:6};
 let referenceYear=new Date().getFullYear()-621;
-function animalIndex(year){return ((year-1405)%12+12)%12;}
-function setReferenceYear(year){referenceYear=Number(year);updateReferenceDisplay();}
+
+function animalIndex(year){
+ return ((Number(year)-cycleReference.year+cycleReference.index)%12+12)%12;
+}
+
+function setReferenceYear(year){
+ referenceYear=Number(year);
+ updateReferenceDisplay();
+}
+
 function getReferenceAnimal(){return animals[animalIndex(referenceYear)];}
-function possibleBirthYears(selectedIndex){let years=[];for(let y=referenceYear;y>0;y--){if(animalIndex(y)===selectedIndex)years.push(y);}return years;}
-function calculateSelected(selectedIndex,birthYear){const age=referenceYear-birthYear;return{birthYear,solarAge:age,lunarAge:Math.floor(age*365.2425/354.367),animal:animals[selectedIndex],referenceAnimal:getReferenceAnimal()};}
-function updateReferenceDisplay(){const el=document.getElementById('referenceAnimal');if(el){const a=getReferenceAnimal();el.innerHTML=`${referenceYear} - ${a.emoji} ${a.fa}`;}}
-function renderAnimals(){const box=document.getElementById('animals');if(!box)return;box.innerHTML='';animals.forEach((a,i)=>{const btn=document.createElement('button');btn.className='animal-card';btn.innerHTML=`${a.emoji}<br>${a.fa}<br><small>${a.tk}</small>`;btn.onclick=()=>showAnimalYears(i);box.appendChild(btn);});updateReferenceDisplay();}
-function showAnimalYears(index){const result=document.getElementById('result');const years=possibleBirthYears(index).slice(0,10);if(result)result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سال تولد را انتخاب کنید:</p><div>${years.map(y=>`<button onclick="showResult(${index},${y})">${y}</button>`).join(' ')}</div>`;}
-function showResult(index,birthYear){const data=calculateSelected(index,birthYear);const result=document.getElementById('result');if(!result)return;const info=window.animalData?.[data.animal.fa];result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>سال مرجع: ${referenceYear} (${data.referenceAnimal.fa})</p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن نسبت به سال مرجع: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p>`:''}`;}
-window.muche={animals,possibleBirthYears,calculateSelected,setReferenceYear,getReferenceAnimal};window.showResult=showResult;window.addEventListener('DOMContentLoaded',()=>{renderAnimals();const input=document.getElementById('referenceYear');if(input){input.value=referenceYear;input.onchange=e=>setReferenceYear(e.target.value);}});
+
+function possibleBirthYears(selectedIndex){
+ let years=[];
+ for(let y=referenceYear;y>0;y--){
+  if(animalIndex(y)===selectedIndex) years.push(y);
+ }
+ return years;
+}
+
+function calculateSelected(selectedIndex,birthYear){
+ const age=referenceYear-Number(birthYear);
+ return {birthYear,solarAge:age,lunarAge:Math.floor(age*365.2425/354.367),animal:animals[selectedIndex],referenceAnimal:getReferenceAnimal()};
+}
+
+function updateReferenceDisplay(){
+ const el=document.getElementById('referenceAnimal');
+ if(el){const a=getReferenceAnimal();el.innerHTML=`${referenceYear} - ${a.emoji} ${a.fa}`;}
+}
+
+function renderAnimals(){
+ const box=document.getElementById('animals');
+ if(!box)return;
+ box.innerHTML='';
+ animals.forEach((a,i)=>{
+  const btn=document.createElement('button');
+  btn.className='animal-card';
+  btn.innerHTML=`${a.emoji}<br>${a.fa}<br><small>${a.tk}</small>`;
+  btn.onclick=()=>showAnimalYears(i);
+  box.appendChild(btn);
+ });
+ updateReferenceDisplay();
+}
+
+function showAnimalYears(index){
+ const result=document.getElementById('result');
+ const years=possibleBirthYears(index).slice(0,10);
+ if(result) result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سال تولد را انتخاب کنید:</p><div>${years.map(y=>`<button onclick="showResult(${index},${y})">${y}</button>`).join(' ')}</div>`;
+}
+
+function showResult(index,birthYear){
+ const data=calculateSelected(index,birthYear);
+ const result=document.getElementById('result');
+ if(!result)return;
+ const info=window.animalData?.[data.animal.fa];
+ result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>سال مرجع: ${referenceYear} (${data.referenceAnimal.fa})</p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن نسبت به سال مرجع: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p>`:''}`;
+}
+
+window.muche={animals,possibleBirthYears,calculateSelected,setReferenceYear,getReferenceAnimal};
+window.showResult=showResult;
+window.addEventListener('DOMContentLoaded',()=>{
+ renderAnimals();
+ const input=document.getElementById('referenceYear');
+ if(input){input.value=referenceYear;input.onchange=e=>setReferenceYear(e.target.value);}
+});
