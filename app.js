@@ -13,47 +13,40 @@ const animals=[
 {fa:'خوک',tk:'دونگیز',emoji:'🐖'}
 ];
 
-// مبنا: سال ۱۴۰۵ = اسب (index 6)
+// مبنا: ۱۴۰۵ = اسب
 const baseYear=1405;
 const baseAnimalIndex=6;
 
-function animalIndex(year){return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;}
+function animalIndex(year){
+ return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;
+}
 
-// تولید سن های احتمالی یک حیوان تا 150 سال
-function possibleAges(index){
+// سن های چرخه ای حیوان بدون وابستگی مستقیم به سال جاری
+function animalCycleAges(){
  let result=[];
  for(let age=1;age<150;age++){
-  let birthYear=baseYear-age;
-  if(animalIndex(birthYear)===index) result.push(age);
+  result.push(age);
+ }
+ return result.filter(age=>age%12===1 || age===12);
+}
+
+function possibleAges(index){
+ let result=[];
+ for(let cycle=0;cycle<13;cycle++){
+  let cycleAge=1+(cycle*12);
+  let birthYear=baseYear-cycleAge;
+  if(animalIndex(birthYear)===index){
+   result.push(cycleAge);
+  }
  }
  return result;
 }
 
-function getBirthYearFromAge(age){return baseYear-age;}
-
-function lunarAge(shamsiAge){
- return Math.floor(shamsiAge*365.2425/354.367);
-}
-
 function calculate(age){
- const birthYear=getBirthYearFromAge(age);
+ const birthYear=baseYear-age;
  const animal=animals[animalIndex(birthYear)];
- const lAge=lunarAge(age);
- return {birthYear,age,lunarAge:lAge,difference:lAge-age,animal};
+ const lunar=Math.floor(age*365.2425/354.367);
+ return {birthYear,age,lunarAge:lunar,difference:lunar-age,animal};
 }
 
 window.muche={animals,possibleAges,calculate};
-
-const box=document.getElementById('animals');
-if(box){
- animals.forEach((a,i)=>{
-  const el=document.createElement('div');
-  el.className='animal-item';
-  el.innerHTML=`${a.emoji}<br>${a.fa}<br>${a.tk}`;
-  el.onclick=()=>{
-   const ages=possibleAges(i);
-   console.log(a.fa,ages);
-  };
-  box.appendChild(el);
- });
-}
