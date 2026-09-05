@@ -22,19 +22,21 @@ function animalIndex(year){
 
 function possibleAges(selectedAnimalIndex){
  let result=[];
- for(let age=selectedAnimalIndex+1;age<150;age+=12){
-  result.push(age);
- }
+ for(let age=selectedAnimalIndex+1;age<150;age+=12) result.push(age);
  return result;
 }
 
 function calculateSelected(selectedAnimalIndex,age){
- const possible=possibleAges(selectedAnimalIndex);
- if(!possible.includes(age)) return null;
+ if(!possibleAges(selectedAnimalIndex).includes(age)) return null;
  const birthYear=baseYear-age;
- const animal=animals[animalIndex(birthYear)];
- const lunar=Math.floor(age*365.2425/354.367);
- return {birthYear,solarAge:age,lunarAge:lunar,difference:lunar-age,animal};
+ const lunarAge=Math.floor(age*365.2425/354.367);
+ return {
+  birthYear,
+  solarAge:age,
+  lunarAge,
+  difference:lunarAge-age,
+  animal:animals[animalIndex(birthYear)]
+ };
 }
 
 function renderAnimals(){
@@ -51,13 +53,20 @@ function renderAnimals(){
 }
 
 function showAnimalAges(index){
- const ages=possibleAges(index);
  const result=document.getElementById('result');
+ const ages=possibleAges(index);
  if(result){
-  result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سن‌های احتمالی: ${ages.join('، ')}</p>`;
+  result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سن احتمالی را انتخاب کنید:</p><div>${ages.map(a=>`<button onclick="showResult(${index},${a})">${a}</button>`).join(' ')}</div>`;
  }
 }
 
-window.muche={animals,possibleAges,calculateSelected};
+function showResult(index,age){
+ const data=calculateSelected(index,age);
+ const result=document.getElementById('result');
+ if(!data||!result) return;
+ result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>نام ترکمنی: <strong>${data.animal.tk}</strong></p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن شمسی: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p><p>اختلاف: ${data.difference}</p>`;
+}
 
+window.muche={animals,possibleAges,calculateSelected};
+window.showResult=showResult;
 window.addEventListener('DOMContentLoaded',renderAnimals);
