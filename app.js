@@ -16,9 +16,7 @@ const animals=[
 const baseYear=1405;
 const baseAnimalIndex=6;
 
-function animalIndex(year){
- return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;
-}
+function animalIndex(year){return ((baseAnimalIndex+(year-baseYear)%12)+12)%12;}
 
 function possibleAges(selectedAnimalIndex){
  let result=[];
@@ -30,13 +28,7 @@ function calculateSelected(selectedAnimalIndex,age){
  if(!possibleAges(selectedAnimalIndex).includes(age)) return null;
  const birthYear=baseYear-age;
  const lunarAge=Math.floor(age*365.2425/354.367);
- return {
-  birthYear,
-  solarAge:age,
-  lunarAge,
-  difference:lunarAge-age,
-  animal:animals[animalIndex(birthYear)]
- };
+ return {birthYear,solarAge:age,lunarAge,difference:lunarAge-age,animal:animals[animalIndex(birthYear)]};
 }
 
 function renderAnimals(){
@@ -56,7 +48,7 @@ function showAnimalAges(index){
  const result=document.getElementById('result');
  const ages=possibleAges(index);
  if(result){
-  result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سن احتمالی را انتخاب کنید:</p><div>${ages.map(a=>`<button onclick="showResult(${index},${a})">${a}</button>`).join(' ')}</div>`;
+ result.innerHTML=`<div class="animal">${animals[index].emoji}</div><h2>${animals[index].fa}</h2><p>نام ترکمنی: <strong>${animals[index].tk}</strong></p><p>سن احتمالی را انتخاب کنید:</p><div>${ages.map(a=>`<button onclick="showResult(${index},${a})">${a}</button>`).join(' ')}</div>`;
  }
 }
 
@@ -64,7 +56,8 @@ function showResult(index,age){
  const data=calculateSelected(index,age);
  const result=document.getElementById('result');
  if(!data||!result) return;
- result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>نام ترکمنی: <strong>${data.animal.tk}</strong></p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن شمسی: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p><p>اختلاف: ${data.difference}</p>`;
+ const info=window.animalData?.[data.animal.fa];
+ result.innerHTML=`<div class="animal">${data.animal.emoji}</div><h2>${data.animal.fa}</h2><p>نام ترکمنی: <strong>${data.animal.tk}</strong></p><p>سال تولد شمسی: ${data.birthYear}</p><p>سن شمسی: ${data.solarAge}</p><p>سن قمری تقریبی: ${data.lunarAge}</p><p>اختلاف: ${data.difference}</p>${info?`<hr><h3>ویژگی‌های سنتی</h3><p>${info.personality}</p><h3>ویژگی‌های طبیعی</h3><p>${info.climate}</p><p>${info.nature}</p>`:''}`;
 }
 
 window.muche={animals,possibleAges,calculateSelected};
